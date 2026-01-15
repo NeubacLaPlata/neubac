@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neubac - Tienda de Neumáticos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0B0F14;
+            --bg-card: #111827;
+            --accent: #F59E0B;
+            --text: #E5E7EB;
+            --text-dim: #9CA3AF;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(245, 158, 11, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(217, 119, 6, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.08) 0%, transparent 60%);
+            z-index: -1;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(5deg); }
+            66% { transform: translate(-20px, 20px) rotate(-5deg); }
+        }
+
+        .banner-top {
+            background: linear-gradient(90deg, var(--accent) 0%, #D97706 100%);
+            color: #000;
+            text-align: center;
+            padding: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1, h2 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: clamp(3.5rem, 12vw, 8rem);
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #FFFFFF 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .hero .brand-name {
+            display: block;
+            font-weight: 800;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.1rem, 3vw, 1.6rem);
+            color: var(--text-dim);
+            margin-bottom: 40px;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 400;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: var(--accent);
+            color: #000;
+            padding: 18px 45px;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
+            font-size: 1.1rem;
+        }
+
+        .cta-btn:hover {
+            box-shadow: 0 0 50px rgba(245, 158, 11, 0.7);
+            transform: translateY(-2px);
+        }
+
+        /* Sections */
+        .section-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            font-weight: 700;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: var(--accent);
+            margin: 20px auto 0;
+        }
+
+        /* Servicios */
+        .servicios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: var(--bg-card);
+            padding: 40px 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .service-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--accent), #D97706);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 24px;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .service-card p {
+            color: var(--text-dim);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        /* Ofertas */
+        .ofertas-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            padding: 60px 50px;
+            border-radius: 12px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .ofertas-content h3 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .ofertas-content p {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            line-height: 1.9;
+        }
+
+        /* Mayoristas */
+        .mayoristas-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.1));
+            padding: 60px 50px;
+            border-radius: 12px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            text-align: center;
+        }
+
+        .mayoristas-content h3 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Ubicación */
+        .ubicacion-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            align-items: start;
+        }
+
+        .info-box {
+            background: var(--bg-card);
+            padding: 45px;
+            border-radius: 12px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .info-box h3 {
+            font-size: 2rem;
+            margin-bottom: 24px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .info-box p {
+            margin-bottom: 16px;
+            font-size: 1.05rem;
+        }
+
+        .map-placeholder {
+            background: var(--bg-card);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dim);
+            font-style: italic;
+        }
+
+        /* FAQ */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            margin-bottom: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 28px 35px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1.05rem;
+        }
+
+        .faq-question:hover {
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .faq-toggle {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+            color: var(--accent);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            padding: 0 35px;
+            color: var(--text-dim);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 0 35px 28px;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-card);
+            padding: 60px 0 30px;
+            margin-top: 80px;
+            border-top: 1px solid rgba(245, 158, 11, 0.2);
+            text-align: center;
+        }
+
+        footer h3 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        footer p {
+            margin-bottom: 12px;
+            color: var(--text-dim);
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-divider {
+            width: 100%;
+            height: 1px;
+            background: rgba(245, 158, 11, 0.2);
+            margin: 30px 0 20px;
+        }
+
+        /* WhatsApp Flotante */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 30px rgba(37, 211, 102, 0.5);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 2rem;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 40px rgba(37, 211, 102, 0.7);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            section {
+                padding: 60px 0;
+            }
+
+            .section-title {
+                margin-bottom: 40px;
+            }
+
+            .servicios-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ofertas-content,
+            .mayoristas-content {
+                padding: 40px 25px;
+            }
+
+            .info-box {
+                padding: 35px 25px;
+            }
+
+            .whatsapp-float {
+                bottom: 20px;
+                right: 20px;
+                width: 55px;
+                height: 55px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="banner-top">
+        Precio efectivo o transferencia. Tenemos lista mayorista.
+    </div>
+
+    <!-- Hero -->
+    <section class="hero visible">
+        <div class="container">
+            <h1><span class="brand-name">NEUBAC</span>Neumáticos</h1>
+            <p class="subtitle">Venta de neumáticos con entrega a domicilio. Todas las marcas y medidas al mejor precio.</p>
+            <a href="https://wa.me/5492216687581" class="cta-btn" target="_blank" rel="noopener">Consultá por WhatsApp</a>
+        </div>
+    </section>
+
+    <!-- Servicios -->
+    <section id="servicios">
+        <div class="container">
+            <h2 class="section-title">Nuestros Servicios</h2>
+            <div class="servicios-grid">
+                <div class="service-card">
+                    <div class="service-icon">🚗</div>
+                    <h3>Venta de Neumáticos</h3>
+                    <p>Todas las marcas y medidas disponibles. Asesoramiento personalizado para tu vehículo.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🚚</div>
+                    <h3>Entrega a Domicilio</h3>
+                    <p>Llevamos tus neumáticos donde los necesites. Rápido, seguro y sin complicaciones.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">💰</div>
+                    <h3>Mejor Precio</h3>
+                    <p>Precios competitivos y promociones constantes. Consultá y compará.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📱</div>
+                    <h3>Atención Rápida</h3>
+                    <p>Respondemos al instante por WhatsApp. Stock actualizado en tiempo real.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">✅</div>
+                    <h3>Garantía de Fábrica</h3>
+                    <p>Todos nuestros neumáticos cuentan con garantía oficial de cada marca.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🎯</div>
+                    <h3>Asesoramiento</h3>
+                    <p>Te ayudamos a elegir el neumático ideal según tu uso y presupuesto.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ofertas -->
+    <section id="ofertas">
+        <div class="container">
+            <h2 class="section-title">Ofertas y Precios</h2>
+            <div class="ofertas-content">
+                <h3>Precios Actualizados</h3>
+                <p>Tenemos neumáticos de todas las medidas y marcas. Los precios varían según stock y promociones vigentes. <strong>Consultá por WhatsApp</strong> tu medida específica y te pasamos el mejor precio al instante.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mayoristas -->
+    <section id="mayoristas">
+        <div class="container">
+            <h2 class="section-title">Venta Mayorista</h2>
+            <div class="mayoristas-content">
+                <h3>Lista de Precios Mayoristas</h3>
+                <p>Si sos revendedor, taller o comprás en cantidad, tenemos precios especiales para vos. Pedí nuestra lista mayorista actualizada por WhatsApp y accedé a los mejores valores del mercado.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ubicación -->
+    <section id="ubicacion">
+        <div class="container">
+            <h2 class="section-title">Ubicación y Horarios</h2>
+            <div class="ubicacion-content">
+                <div class="info-box">
+                    <h3>Dirección</h3>
+                    <p><strong>📍 Av. 72 y 118 N°102</strong></p>
+                    <p>La Plata, Buenos Aires</p>
+                </div>
+                <div class="info-box">
+                    <h3>Horarios</h3>
+                    <p><strong>Lunes a Viernes:</strong> 8:00 a 19:00</p>
+                    <p><strong>Sábados:</strong> 8:00 a 13:00</p>
+                    <p><strong>Domingos:</strong> Cerrado</p>
+                </div>
+            </div>
+            <div style="margin-top: 40px;">
+                <div class="map-placeholder">
+                    [ Mapa - Reemplazar con iframe de Google Maps ]
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+        <div class="container">
+            <h2 class="section-title">Preguntas Frecuentes</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>¿Tienen la medida de mi auto?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sí, trabajamos con todas las marcas y medidas. Mandanos un mensaje por WhatsApp con la medida de tu cubierta y te confirmamos stock y precio al instante.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>¿Hacen envíos a domicilio?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sí, hacemos entregas en La Plata y alrededores. Consultanos por WhatsApp tu zona y te pasamos el costo de envío.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>¿Aceptan tarjeta de crédito?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Trabajamos principalmente con efectivo y transferencia para ofrecerte el mejor precio. Consultá disponibilidad de otros medios de pago.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>¿Son neumáticos originales?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sí, todos nuestros neumáticos son originales y cuentan con garantía de fábrica. Trabajamos con marcas reconocidas del mercado.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>¿Cuánto tarda la entrega?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Dependiendo de la zona y el horario, generalmente coordinamos entregas el mismo día o al día siguiente. Lo confirmamos cuando hagas tu pedido.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>¿Puedo pasar a buscar los neumáticos?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sí, podés retirar en nuestra dirección coordinando previamente por WhatsApp. Te confirmamos stock y tenemos todo listo para que pases a buscar.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <h3>NEUBAC</h3>
+            <p>📍 Av. 72 y 118 N°102 - La Plata</p>
+            <p>📱 WhatsApp: <a href="https://wa.me/5492216687581" target="_blank" rel="noopener">221-668-7581</a></p>
+            <div class="footer-divider"></div>
+            <p style="font-size: 0.9rem;">© 2026 Neubac. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Flotante -->
+    <a href="https://wa.me/5492216687581" class="whatsapp-float" target="_blank" rel="noopener">
+        <span style="color: white;">💬</span>
+    </a>
+
+    <script>
+        // Animación al scroll
+        const sections = document.querySelectorAll('section:not(.hero)');
+        
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // FAQ Accordion
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Cerrar todos los items
+                faqItems.forEach(i => i.classList.remove('active'));
+                
+                // Abrir el clickeado si no estaba activo
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
